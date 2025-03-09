@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SecKillMapper">
+
+    <select id="list" resultType="com.example.pojo.SecKillVO">
+        SELECT g.*, s.* FROM sec_kill s join goods g on s.goods_id=g.goods_id
+        <where>
+            <if test="key !=null and key!=''">
+                AND g.description LIKE CONCAT('%',#{key},'%')
+            </if>
+            <if test="status ==1">
+                AND NOW() <![CDATA[<]]> s.start_time
+            </if>
+            <if test="status ==2">
+                AND NOW() BETWEEN s.start_time AND s.end_time
+            </if>
+            <if test="status==0">
+                AND NOW() <![CDATA[>=]]> s.end_time
+            </if>
+            <if test="role == 2">
+                AND s.end_time >= NOW()
+            </if>
+<!--            <if test="startTime !=null and endTime !=null">-->
+<!--                AND s.start_time BETWEEN #{startTime} AND #{endTime}-->
+<!--            </if>-->
+        </where>
+        ORDER BY start_time ASC
+    </select>
+
+
+<!--    <select id="list" resultType="com.example.pojo.SecKillVO">-->
+<!--        SELECT g.*, s.* FROM sec_kill s join goods g on s.goods_id=g.goods_id-->
+<!--        WHERE description LIKE CONCAT('%', #{baseQueryDTO.key}, '%')-->
+<!--        ORDER BY start_time ASC-->
+<!--            LIMIT #{baseQueryDTO.pageSize} OFFSET #{offset}-->
+<!--    </select>-->
+
+</mapper>
