@@ -11,7 +11,8 @@ import java.util.UUID;
 public class UploadUtil {
     private static final String domain="";
     private static final String endPoint="";
-
+    private static final String accessKeyId="";
+    private static final String accessKeySecret="";
     private static final String bucketName="";
 
     /**
@@ -26,7 +27,7 @@ public class UploadUtil {
         String ext=originalFileName.substring(index); //获取后缀
         String uuid= UUID.randomUUID().toString();
         String fileName=uuid+ext;
-        OSS oss=new OSSClientBuilder().build(endPoint,,);
+        OSS oss=new OSSClientBuilder().build(endPoint,accessKeyId,accessKeySecret);
         try{
             oss.putObject(
                     bucketName,
@@ -49,7 +50,7 @@ public class UploadUtil {
         // 填写文件完整路径。文件完整路径中不能包含Bucket名称。（这里根据自己的地址改）
         String fileName = url.replace(domain+"/", "");
         System.out.println("拆分后的路径"+fileName);
-        OSS ossClient = new OSSClientBuilder().build(endPoint,,);
+        OSS ossClient = new OSSClientBuilder().build(endPoint,accessKeyId,accessKeySecret);
         ossClient.deleteObject(bucketName, fileName);
         ossClient.shutdown();
     }
